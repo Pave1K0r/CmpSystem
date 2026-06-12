@@ -1,6 +1,5 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Delete, Key } from '@element-plus/icons-vue'
 import {
   getUserListService,
@@ -68,11 +67,11 @@ const handleSwitchChange = async (row, val) => {
   const actionText = newStatus === 1 ? '启用' : '禁用'
 
   try {
-    await ElMessageBox.confirm(
-      `确定要${actionText}用户 "${row.username}" 吗？`,
-      '提示',
-      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
-    )
+    await ElMessageBox.confirm(`确定要${actionText}用户 "${row.username}" 吗？`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
     await updateUserStatusService(row.id, newStatus)
     row.status = newStatus
     ElMessage.success(`${actionText}成功`)
@@ -152,7 +151,13 @@ onMounted(() => {
     </div>
 
     <el-table v-loading="loading" :data="paginatedList" style="width: 100%" border>
-      <el-table-column type="index" label="序号" width="80" align="center" :index="(index) => (pagination.currentPage - 1) * pagination.pageSize + index + 1" />
+      <el-table-column
+        type="index"
+        label="序号"
+        width="80"
+        align="center"
+        :index="(index) => (pagination.currentPage - 1) * pagination.pageSize + index + 1"
+      />
       <el-table-column prop="username" label="用户名" min-width="150" align="center" />
       <el-table-column prop="createdAt" label="注册时间" min-width="180" align="center" />
       <el-table-column prop="status" label="状态" width="120" align="center">
@@ -209,7 +214,12 @@ onMounted(() => {
         <el-input v-model="resetForm.username" disabled />
       </el-form-item>
       <el-form-item label="新密码" prop="password">
-        <el-input v-model="resetForm.password" type="password" placeholder="请输入新密码" show-password />
+        <el-input
+          v-model="resetForm.password"
+          type="password"
+          placeholder="请输入新密码"
+          show-password
+        />
       </el-form-item>
     </el-form>
     <template #footer>

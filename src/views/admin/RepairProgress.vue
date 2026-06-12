@@ -1,6 +1,5 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
 import { ChatLineRound } from '@element-plus/icons-vue'
 import { getRepairListService, updateRepairStatusService, replyRepairService } from '@/api/repair'
 

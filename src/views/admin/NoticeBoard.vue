@@ -1,6 +1,5 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Delete } from '@element-plus/icons-vue'
 import { getNoticeListService, addNoticeService, deleteNoticeService } from '@/api/notice'
 
@@ -79,31 +78,18 @@ onMounted(() => {
         />
       </el-form-item>
       <el-form-item style="margin-bottom: 0; margin-left: 12px">
-        <el-button type="primary" :icon="Plus" @click="handleSubmit">
-          发布公告
-        </el-button>
+        <el-button type="primary" :icon="Plus" @click="handleSubmit"> 发布公告 </el-button>
       </el-form-item>
     </el-form>
 
     <!-- 公告列表 -->
     <el-divider />
-    <el-table
-      v-loading="loading"
-      :data="noticeList"
-      style="width: 100%"
-      border
-    >
+    <el-table v-loading="loading" :data="noticeList" style="width: 100%" border>
       <el-table-column type="index" label="序号" width="80" align="center" />
       <el-table-column prop="content" label="公告内容" min-width="400" show-overflow-tooltip />
       <el-table-column label="操作" width="120" align="center" fixed="right">
         <template #default="{ row }">
-          <el-button
-            link
-            type="danger"
-            size="small"
-            :icon="Delete"
-            @click="handleDelete(row)"
-          >
+          <el-button link type="danger" size="small" :icon="Delete" @click="handleDelete(row)">
             删除
           </el-button>
         </template>

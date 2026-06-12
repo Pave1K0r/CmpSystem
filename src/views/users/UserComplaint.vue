@@ -1,6 +1,5 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
-import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { getComplaintListService, addComplaintService } from '@/api/complaint'
 

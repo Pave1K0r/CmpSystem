@@ -1,28 +1,34 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 // 用户模块 token setToken removeToken
 export const useUserStore = defineStore(
   'user',
   () => {
     const token = ref('')
-    const username = ref('')
+    const user = ref({})
+
+    const username = computed(() => user.value?.username)
+    const role = computed(() => user.value?.role)
     const setToken = (newToken) => {
       token.value = newToken
     }
-    const setUsername = (newUsername) => {
-      username.value = newUsername
+    const setUser = (newUser) => {
+      user.value = newUser
     }
-    const removeToken = () => {
+    const clear = () => {
       token.value = ''
-      username.value = ''
+      user.value = {}
     }
     return {
       token,
       username,
+      user,
+      role,
       setToken,
-      setUsername,
-      removeToken,
+      setUser,
+      logout: clear,
+      removeToken: clear,
     }
   },
   {

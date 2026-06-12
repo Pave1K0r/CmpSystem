@@ -1,7 +1,6 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
 import { userLoginService } from '@/api/login'
@@ -9,7 +8,6 @@ import { userLoginService } from '@/api/login'
 const role = ref('user') // 'user' 或 'admin'
 const loading = ref(false)
 const loginFormRef = ref(null)
-
 const router = useRouter()
 const userStore = useUserStore()
 
@@ -45,8 +43,7 @@ const handleLogin = () => {
         ElMessage.success(res.message + '！欢迎 ' + loginForm.username)
         // 存储 Token 和用户名
         if (res.token) userStore.setToken(res.token)
-        userStore.setUsername(loginForm.username)
-
+        userStore.setUser(loginForm.username)
         // 根据角色跳转到对应页面
         router.push(role.value === 'admin' ? '/admin' : '/users')
       } finally {

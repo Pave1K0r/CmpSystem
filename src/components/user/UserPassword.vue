@@ -1,6 +1,5 @@
 <script setup>
 import { ref, reactive } from 'vue'
-import { ElMessage } from 'element-plus'
 import { Lock } from '@element-plus/icons-vue'
 import { resetPasswordService } from '@/api/user'
 import { useUserStore } from '@/stores'

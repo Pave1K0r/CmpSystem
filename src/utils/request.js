@@ -1,7 +1,6 @@
 import axios from 'axios'
 import router from '@/router'
 import { useUserStore } from '@/stores'
-import { ElMessage } from 'element-plus'
 
 const baseURL = '/api'
 

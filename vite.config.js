@@ -13,12 +13,8 @@ export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
-     AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    Components({
-      resolvers: [ElementPlusResolver()],
-    }),
+    AutoImport({ resolvers: [ElementPlusResolver()] }),
+    Components({ resolvers: [ElementPlusResolver()] }),
   ],
   base: '/',
   server: {
@@ -26,12 +22,12 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:11451',
         changeOrigin: true,
-      }
-    }
+      },
+    },
   },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })

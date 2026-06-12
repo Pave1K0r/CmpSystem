@@ -1,7 +1,6 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Delete, Edit } from '@element-plus/icons-vue'
 import {
   getHouseListService,
@@ -218,7 +217,9 @@ onMounted(() => {
       <el-table-column prop="info" label="房屋信息" min-width="150" align="center" />
       <el-table-column v-if="isAdmin" label="操作" width="150" align="center" fixed="right">
         <template #default="{ row }">
-          <el-button link type="primary" size="small" :icon="Edit" @click="handleEdit(row)">编辑</el-button>
+          <el-button link type="primary" size="small" :icon="Edit" @click="handleEdit(row)"
+            >编辑</el-button
+          >
           <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>

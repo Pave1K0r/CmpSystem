@@ -1,18 +1,29 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Tools, ChatDotRound, SwitchButton, Money, House, Bell, Lock } from '@element-plus/icons-vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import {
+  Tools,
+  ChatDotRound,
+  SwitchButton,
+  Money,
+  House,
+  Bell,
+  Lock,
+} from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
 
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-
+// 存储选中路由
 const activeMenu = ref(route.path)
-watch(() => route.path, (newPath) => {
-  activeMenu.value = newPath
-})
+// 监听路由变化
+watch(
+  () => route.path,
+  (newPath) => {
+    activeMenu.value = newPath
+  },
+)
 
 // 图标映射：路径 -> 图标组件
 const iconMap = {
@@ -24,17 +35,19 @@ const iconMap = {
   '/users/userpassword': Lock,
 }
 
-// 从路由配置动态生成侧边栏菜单，与 router/index.js 保持同步
+// 从路由配置动态生成侧边栏菜单
 const menuList = computed(() => {
   const userRoutes = router.getRoutes().filter((r) => {
     const p = r.path
     return p.startsWith('/users/')
   })
-  return userRoutes.map((r) => ({
-    path: r.path,
-    title: r.meta?.title || r.name,
-    icon: iconMap[r.path],
-  })).filter((item) => item.icon)
+  return userRoutes
+    .map((r) => ({
+      path: r.path,
+      title: r.meta?.title || r.name,
+      icon: iconMap[r.path],
+    }))
+    .filter((item) => item.icon)
 })
 
 const handleSelect = (path) => {
@@ -47,7 +60,7 @@ const handleLogout = () => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    userStore.removeToken()
+    userStore.logout()
     ElMessage.success('退出成功')
     router.push('/login')
   })
@@ -55,50 +68,52 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <el-container class="user-layout">
-    <!-- 侧边栏 -->
-    <el-aside width="220px" class="sidebar">
-      <div class="logo">
-        <span>业主服务中心</span>
-      </div>
-      <el-menu
-        :default-active="activeMenu"
-        class="el-menu-vertical"
-        @select="handleSelect"
-        background-color="transparent"
-        active-text-color="#fff"
-        text-color="#fff"
-      >
-        <el-menu-item v-for="item in menuList" :key="item.path" :index="item.path">
-          <el-icon>
-            <component :is="item.icon" />
-          </el-icon>
-          <span>{{ item.title }}</span>
-        </el-menu-item>
-      </el-menu>
-      <div class="sidebar-bottom">
-        <el-button type="danger" plain class="logout-btn" @click="handleLogout">
-          <el-icon><SwitchButton /></el-icon>
-          退出登录
-        </el-button>
-      </div>
-    </el-aside>
-
-    <el-container>
-      <!-- 顶部导航 -->
-      <el-header class="header">
-        <div class="header-title">欢迎回来，{{ userStore.username }}</div>
-        <div class="user-avatar">
-          <span class="avatar-text">U</span>
+  <div>
+    <el-container class="user-layout">
+      <!-- 侧边栏 -->
+      <el-aside width="220px" class="sidebar">
+        <div class="logo">
+          <span>业主服务中心</span>
         </div>
-      </el-header>
+        <el-menu
+          :default-active="activeMenu"
+          class="el-menu-vertical"
+          @select="handleSelect"
+          background-color="transparent"
+          active-text-color="#fff"
+          text-color="#fff"
+        >
+          <el-menu-item v-for="item in menuList" :key="item.path" :index="item.path">
+            <el-icon>
+              <component :is="item.icon" />
+            </el-icon>
+            <span>{{ item.title }}</span>
+          </el-menu-item>
+        </el-menu>
+        <div class="sidebar-bottom">
+          <el-button type="danger" plain class="logout-btn" @click="handleLogout">
+            <el-icon><SwitchButton /></el-icon>
+            退出登录
+          </el-button>
+        </div>
+      </el-aside>
 
-      <!-- 主内容区 -->
-      <el-main class="main-content">
-        <router-view />
-      </el-main>
+      <el-container>
+        <!-- 顶部导航 -->
+        <el-header class="header">
+          <div class="header-title">欢迎回来，{{ userStore.username }}</div>
+          <div class="user-avatar">
+            <span class="avatar-text">U</span>
+          </div>
+        </el-header>
+
+        <!-- 主内容区 -->
+        <el-main class="main-content">
+          <router-view />
+        </el-main>
+      </el-container>
     </el-container>
-  </el-container>
+  </div>
 </template>
 
 <style scoped>
