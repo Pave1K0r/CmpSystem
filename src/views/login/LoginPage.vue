@@ -43,7 +43,7 @@ const handleLogin = () => {
         ElMessage.success(res.message + '！欢迎 ' + loginForm.username)
         // 存储 Token 和用户名
         if (res.token) userStore.setToken(res.token)
-        userStore.setUser(loginForm.username)
+        userStore.setUser({ username: loginForm.username, role: role.value })
         // 根据角色跳转到对应页面
         router.push(role.value === 'admin' ? '/admin' : '/users')
       } finally {

@@ -133,12 +133,17 @@ router.beforeEach((to, from) => {
       return '/login'
     }
   }
-  // B：已登录，想回登录页
-  if (token && to.path === '/login') {
+  // B：已登录但角色无效（防止 localStorage 数据损坏导致死循环）
+  if (!role) {
+    useStore.logout()
+    return '/login'
+  }
+  // C：已登录，想回登录页
+  if (to.path === '/login') {
     return role === 'admin' ? '/admin' : '/users'
   }
-  // C：已登录，只要目标路由中的role数组不含当前role则拦截
-  if (token && to.meta.role && !to.meta.role.includes(role)) {
+  // D：已登录，只要目标路由中的role数组不含当前role则拦截
+  if (to.meta.role && !to.meta.role.includes(role)) {
     return role === 'admin' ? '/admin' : '/users'
   }
   return true

@@ -34,27 +34,28 @@ instance.interceptors.response.use(
   },
   function (error) {
     // 1. 处理 401 Token 失效/未授权
-    if (error.response.status === 401) {
+    // 1. 处理 401 Token 失效/未授权
+    if (error.response?.status === 401) {
       const userStore = useUserStore()
       // 清除本地过期的 token
       userStore.removeToken()
       // 跳转到登录页
       router.push('/login')
-      ElMessage.error(error.response.data?.message)
+      ElMessage.error(error.response?.data?.message || '登录已过期')
       return Promise.reject(error)
     }
 
     // 2. 处理 403 账号被禁用
-    if (error.response.status === 403) {
+    if (error.response?.status === 403) {
       const userStore = useUserStore()
       userStore.removeToken()
       router.push('/login')
-      ElMessage.error(error.response.data?.message)
+      ElMessage.error(error.response?.data?.message || '账号被禁用')
       return Promise.reject(error)
     }
 
     // 3. 处理其他常见的 HTTP 错误
-    const msg = error.response.data.message || '网络请求失败'
+    const msg = error.response?.data?.message || error.message || '网络请求失败'
     ElMessage.error(msg)
     return Promise.reject(error)
   },
