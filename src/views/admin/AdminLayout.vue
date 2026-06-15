@@ -110,7 +110,7 @@ const handleLogout = () => {
       <el-container>
         <!-- 顶部导航 -->
         <el-header class="header">
-          <div class="header-title">欢迎回来!，{{ userStore.username }}</div>
+          <div class="header-title">欢迎回来! {{ userStore.username }}</div>
           <div class="user-avatar">
             <span class="avatar-text">A</span>
           </div>

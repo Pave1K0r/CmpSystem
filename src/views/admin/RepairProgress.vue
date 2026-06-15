@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { ChatLineRound } from '@element-plus/icons-vue'
 import { getRepairListService, updateRepairStatusService, replyRepairService } from '@/api/repair'
 
@@ -84,8 +84,30 @@ const handleSubmitReply = async () => {
   handleCloseReply()
 }
 
+// 轮询定时器
+let pollTimer = null
+
+// 启动轮询
+const startPolling = () => {
+  stopPolling()
+  pollTimer = setInterval(() => {
+    fetchRepairList()
+  }, 3000)
+}
+
+// 停止轮询
+const stopPolling = () => {
+  if (pollTimer) {
+    clearInterval(pollTimer)
+    pollTimer = null
+  }
+}
 onMounted(() => {
-  fetchRepairList()
+  ;(fetchRepairList(), startPolling())
+})
+
+onUnmounted(() => {
+  stopPolling()
 })
 </script>
 
